@@ -11,9 +11,11 @@ Program ocekava 2 argumenty: **adresu** a **nazev souboru** kam budou vysledky e
 ## Potrebne knihovny
 
 Pro spravnou funkci programu jsou potrebne nasledujici knihovny: `requests`, `urllib3` a `BeautifulSoup4`. Tyto lze nainstalovat nasledujicim prikazem:
+
 `pip install requests urllib3 bs4`
 
 ## Spusteni projektu
 
 Projekt lze spustit napriklad takto:
+
 `python main.py https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=12&xnumnuts=7103 vysledky_prostejov.csv`
