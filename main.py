@@ -49,9 +49,6 @@ if len(sys.argv) != 3:
 scraped_address = sys.argv[1]
 export_filename = sys.argv[2]
 
-# scraped_address = "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=12&xnumnuts=7103"
-# export_filename = "vysledky_prostejov.csv"
-
 try:
     parsed_address = urlparse(scraped_address)
     if (parsed_address.scheme == ''):
