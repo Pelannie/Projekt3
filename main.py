@@ -42,69 +42,74 @@ def generate_csv_row(obec_details, election_results):
 
     return row
 
-if len(sys.argv) != 3:
-    print("Zadej dva argumenty.")
-    exit()
+def main():
 
-verbose = True
+    if len(sys.argv) != 3:
+        print("Zadej dva argumenty.")
+        exit()
 
-scraped_address = sys.argv[1]
-export_filename = sys.argv[2]
+    verbose = True
 
-try:
-    parsed_address = urlparse(scraped_address)
-    if (parsed_address.scheme == ''):
-        raise URLError("Adresa neni validni")
-    urlopen(scraped_address)
-except URLError:
-    print(scraped_address, "neni validni adresa.")
-    exit()  
+    scraped_address = sys.argv[1]
+    export_filename = sys.argv[2]
 
-f = open(export_filename, 'w', encoding='utf-8')
-writer = csv.writer(f)
-header_written = False
-obce = []
+    try:
+        parsed_address = urlparse(scraped_address)
+        if (parsed_address.scheme == ''):
+            raise URLError("Adresa neni validni")
+        urlopen(scraped_address)
+    except URLError:
+        print(scraped_address, "neni validni adresa.")
+        exit()  
 
-r = requests.get(scraped_address)
-html = r.content
+    f = open(export_filename, 'w', encoding='utf-8')
+    writer = csv.writer(f)
+    header_written = False
+    obce = []
 
-obce = parse_list_page(html)
-
-election_structure = []
-
-for obec in obce:
-    election_row = {}
-    election_row["code"] = obec["cislo"]
-    election_row["location"] = obec["nazev"]
-
-    r = requests.get(requests.compat.urljoin(scraped_address, 
-                                             obec["odkaz"]))
+    r = requests.get(scraped_address)
     html = r.content
-    okrsek = is_okrsek_list_page(html)
-    if (okrsek):
-        okrsky = parse_okrsek_list_page(html)
-        election_results_counter = {}
-        for okrsky_item in okrsky:
-            r = requests.get(requests.compat.urljoin(scraped_address, 
-                             okrsky_item["odkaz"]))
-            html = r.content
+
+    obce = parse_list_page(html)
+
+    election_structure = []
+
+    for obec in obce:
+        election_row = {}
+        election_row["code"] = obec["cislo"]
+        election_row["location"] = obec["nazev"]
+
+        r = requests.get(requests.compat.urljoin(scraped_address, 
+                                                obec["odkaz"]))
+        html = r.content
+        okrsek = is_okrsek_list_page(html)
+        if (okrsek):
+            okrsky = parse_okrsek_list_page(html)
+            election_results_counter = {}
+            for okrsky_item in okrsky:
+                r = requests.get(requests.compat.urljoin(scraped_address, 
+                                okrsky_item["odkaz"]))
+                html = r.content
+                election_results = parse_detail_page(html)
+                election_results_counter = combine_results(
+                    election_results_counter, 
+                    election_results
+                    )
+            election_results = election_results_counter
+        else:
             election_results = parse_detail_page(html)
-            election_results_counter = combine_results(
-                election_results_counter, 
-                election_results
-                )
-        election_results = election_results_counter
-    else:
-        election_results = parse_detail_page(html)
 
-    if (not header_written):
-        header = generate_csv_header(election_row, election_results)
-        if verbose: print(header)
-        writer.writerow(header)
-        header_written = True
-    
-    row = generate_csv_row(election_row, election_results)
-    writer.writerow(row)
-    if verbose: print(election_row, election_results)
+        if (not header_written):
+            header = generate_csv_header(election_row, election_results)
+            if verbose: print(header)
+            writer.writerow(header)
+            header_written = True
+        
+        row = generate_csv_row(election_row, election_results)
+        writer.writerow(row)
+        if verbose: print(election_row, election_results)
 
-f.close
+    f.close
+
+if __name__ == '__main__':
+    main()
