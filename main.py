@@ -25,7 +25,7 @@ def combine_results(counter, increase):
     return counter
 
 
-def generate_csv_header(obec_details, election_results):
+def generate_csv_header(election_results):
     header = ["code", "location", "registered", "envelopes", "valid"]
     for key in election_results.keys():
         if key.isdigit():
@@ -105,7 +105,7 @@ def main():
             election_results = parse_detail_page(html)
 
         if not header_written:
-            header = generate_csv_header(election_row, election_results)
+            header = generate_csv_header(election_results)
             if verbose:
                 print(header)
             writer.writerow(header)
