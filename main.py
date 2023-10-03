@@ -116,7 +116,7 @@ def main():
         if verbose:
             print(election_row, election_results)
 
-    f.close
+    f.close()
 
 
 if __name__ == "__main__":

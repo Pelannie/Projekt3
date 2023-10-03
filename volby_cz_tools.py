@@ -11,9 +11,7 @@ from bs4 import BeautifulSoup
 def is_okrsek_list_page(html):
     parsed_html = BeautifulSoup(html, features="html.parser")
     table = parsed_html.body.find("th", attrs={"id": "s1"})
-    if table is None:
-        return False
-    if table.text != "Okrsek":
+    if table is None or table.text != "Okrsek":
         return False
     return True
 
