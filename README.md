@@ -11,9 +11,9 @@ Program ocekava 2 argumenty: **adresu** a **nazev souboru** kam budou vysledky e
 
 ## Potrebne knihovny
 
-Pro spravnou funkci programu jsou potrebne nasledujici knihovny: `requests`, `urllib3` a `BeautifulSoup4`. Tyto lze nainstalovat nasledujicim prikazem:
+Pro spravnou funkci programu jsou potrebne nasledujici knihovny: `requests`, `urllib3` a `BeautifulSoup4`. Tyto lze nainstalovat nasledujicim prikazem s pouzitime `requirements.txt` seznamu potrebnych knihoven:
 
-`pip install requests urllib3 bs4`
+`pip install -r requirements.txt`
 
 ## Spusteni projektu
 
