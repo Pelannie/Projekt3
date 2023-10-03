@@ -78,8 +78,6 @@ def main():
 
     obce = parse_list_page(html)
 
-    election_structure = []
-
     for obec in obce:
         election_row = {}
         election_row["code"] = obec["cislo"]
