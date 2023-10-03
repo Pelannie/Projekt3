@@ -54,7 +54,7 @@ def main():
         print("Zadej dva argumenty.")
         exit()
 
-    verbose = True
+    verbose = False
 
     scraped_address = sys.argv[1]
     export_filename = sys.argv[2]
