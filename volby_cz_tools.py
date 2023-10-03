@@ -37,6 +37,7 @@ def parse_detail_page(html):
         result_set["valid"] = scraped_valid.text.replace("\xa0", "")
 
     tables = parsed_html.body.find_all("table", {"class": "table"})
+    
     election_results = tables[1].find_all("tr")
     for party in election_results:
         votes = {}
@@ -45,6 +46,18 @@ def parse_detail_page(html):
             continue
         jmeno = party.find('td', attrs={'class':'overflow_name'})
         num_votes = party.find('td', attrs={'class':'cislo', 'headers': "t1sa2 t1sb3"})
+        votes["jmeno"] = jmeno.text
+        votes["hlasy"] = num_votes.text
+        result_set[cislo.text] = votes
+
+    election_results = tables[2].find_all("tr")
+    for party in election_results:
+        votes = {}
+        cislo = party.find('td', attrs={'class':'cislo', 'headers': "t2sa1 t2sb1"})
+        if (not cislo):
+            continue
+        jmeno = party.find('td', attrs={'class':'overflow_name'})
+        num_votes = party.find('td', attrs={'class':'cislo', 'headers': "t2sa2 t2sb3"})
         votes["jmeno"] = jmeno.text
         votes["hlasy"] = num_votes.text
         result_set[cislo.text] = votes

@@ -46,6 +46,8 @@ if len(sys.argv) != 3:
     print("Zadej dva argumenty.")
     exit()
 
+verbose = True
+
 scraped_address = sys.argv[1]
 export_filename = sys.argv[2]
 
@@ -97,12 +99,12 @@ for obec in obce:
 
     if (not header_written):
         header = generate_csv_header(election_row, election_results)
-        print(header)
+        if verbose: print(header)
         writer.writerow(header)
         header_written = True
     
     row = generate_csv_row(election_row, election_results)
     writer.writerow(row)
-    print(election_row, election_results)
+    if verbose: print(election_row, election_results)
 
 f.close
